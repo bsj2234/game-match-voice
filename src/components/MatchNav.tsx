@@ -12,7 +12,7 @@ export function MatchNav() {
     <header className="sticky top-0 z-40 border-b border-[var(--line)] bg-[var(--paper)]/90 backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-5 md:px-8">
         <Link href="/" className="font-display text-lg font-extrabold tracking-tight">
-          Game<span className="text-[var(--signal)]">Match</span>
+          Melt<span className="text-[var(--signal)]">In</span>
         </Link>
         <nav className="flex items-center gap-6 text-sm font-semibold">
           <Link

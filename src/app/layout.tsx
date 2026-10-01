@@ -15,9 +15,9 @@ const sans = Figtree({
 });
 
 export const metadata: Metadata = {
-  title: "GameMatch — 취향 맞는 파티를 찾다",
+  title: "MeltIn — 맞는 로비에 녹아든다",
   description:
-    "게임 취향으로 매칭하고, 맞으면 바로 음성으로 붙는 파티 파인더.",
+    "게임 취향으로 매칭하고, 음성 로비로 자연스럽게 들어가는 파티 파인더.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

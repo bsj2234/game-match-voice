@@ -29,7 +29,7 @@ export default function HomePage() {
       <div className="relative z-10 border-b border-white/10">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-5 md:px-8">
           <div className="font-display text-lg font-extrabold tracking-tight">
-            Game<span className="text-[var(--signal)]">Match</span>
+            Melt<span className="text-[var(--signal)]">In</span>
           </div>
           <Link
             href="/match"
@@ -42,16 +42,16 @@ export default function HomePage() {
 
       <main className="relative z-10 mx-auto flex min-h-[calc(100vh-56px)] max-w-6xl flex-col justify-center px-5 pb-24 pt-16 md:px-8">
         <p className="anim-rise mb-5 font-display text-sm font-semibold uppercase tracking-[0.28em] text-[var(--signal)]">
-          GameMatch
+          MeltIn
         </p>
         <h1 className="anim-rise-delay max-w-4xl font-display text-5xl font-extrabold leading-[0.98] tracking-tight md:text-7xl lg:text-8xl">
-          맞는 사람과
+          맞는 로비에
           <br />
-          바로 붙는다
+          녹아든다
         </h1>
         <div className="anim-underline mt-5 h-1 w-28 bg-[var(--signal)]" />
         <p className="anim-rise-delay-2 mt-7 max-w-lg text-lg leading-relaxed text-white/70">
-          게임 취향으로 매칭하고, 맞으면 음성 로비로 바로 들어갑니다.
+          게임 취향으로 매칭하고, 맞으면 음성 로비로 자연스럽게 들어갑니다.
         </p>
         <div className="anim-rise-delay-2 mt-10 flex flex-wrap gap-3">
           <Link

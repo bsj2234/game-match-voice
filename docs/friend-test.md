@@ -1,4 +1,4 @@
-# 친구랑 테스트하기
+# MeltIn — 친구랑 테스트하기
 
 지금 앱은 **서버 1대**에서 시그널링을 메모리에 둡니다.  
 그래서 **항상 켜져 있는 단일 Node 서버**(Render / Railway / Docker VPS)에 올려야 합니다.  
@@ -7,11 +7,12 @@
 ## 가장 빠른 방법: Render 무료 배포
 
 1. https://render.com 가입 (GitHub 연동)
-2. **New → Blueprint** 또는 **Web Service**
+2. **New → Web Service**
 3. 이 레포 `bsj2234/game-match-voice` 연결
 4. Runtime: **Docker** (또는 `render.yaml` 사용)
-5. 배포 후 URL 예: `https://game-match-voice-xxxx.onrender.com`
-6. 친구에게 그 링크 + `/match` 공유
+5. Name은 `meltin` 등으로 지어도 됨
+6. 배포 후 URL 예: `https://meltin-xxxx.onrender.com`
+7. 친구에게 그 링크 + `/match` 공유
 
 > Render 무료 플랜은 잠깐 안 쓰면 잠듭니다. 첫 접속에 30~60초 걸릴 수 있어요.
 

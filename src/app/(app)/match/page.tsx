@@ -33,13 +33,13 @@ export default function MatchPage() {
     <div className="mx-auto w-full max-w-6xl flex-1 px-5 py-10 md:px-8">
       <div className="mb-10 max-w-2xl">
         <p className="font-display text-xs font-bold uppercase tracking-[0.22em] text-[var(--signal)]">
-          Match Board
+          MeltIn
         </p>
         <h1 className="mt-2 font-display text-4xl font-extrabold tracking-tight md:text-5xl">
           오늘 뭐 할래?
         </h1>
         <p className="mt-3 text-[var(--muted)]">
-          게임을 고르면 열려 있는 파티가 나타납니다. 고르면 바로 음성 로비로 이동합니다.
+          게임을 고르면 열린 파티가 보여요. 고르면 음성 로비로 바로 들어갑니다.
         </p>
       </div>
 
