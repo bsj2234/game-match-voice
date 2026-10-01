@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { defaultChannelId, getCommunity } from "@/lib/mock-data";
+import { getCommunity } from "@/lib/mock-data";
 
 export default async function ServerIndexPage({
   params,
@@ -9,7 +9,11 @@ export default async function ServerIndexPage({
   const { serverId } = await params;
   const community = getCommunity(serverId);
   if (!community) {
-    redirect("/channels/valorant-kr/general");
+    redirect("/match");
   }
-  redirect(`/channels/${serverId}/${defaultChannelId(serverId)}`);
+  const voice =
+    community.categories
+      .flatMap((c) => c.channels)
+      .find((ch) => ch.type === "voice") ?? community.categories[0]?.channels[0];
+  redirect(`/channels/${serverId}/${voice?.id ?? "general"}`);
 }

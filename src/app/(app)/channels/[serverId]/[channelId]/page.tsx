@@ -1,7 +1,5 @@
 import { redirect } from "next/navigation";
-import { ChannelSidebar } from "@/components/ChannelSidebar";
 import { ChatArea } from "@/components/ChatArea";
-import { MemberList } from "@/components/MemberList";
 import { defaultChannelId, getChannel, getCommunity } from "@/lib/mock-data";
 
 export default async function ChannelPage({
@@ -13,7 +11,7 @@ export default async function ChannelPage({
   const community = getCommunity(serverId);
 
   if (!community) {
-    redirect("/channels/valorant-kr/general");
+    redirect("/match");
   }
 
   const resolved = getChannel(serverId, channelId);
@@ -22,10 +20,8 @@ export default async function ChannelPage({
   }
 
   return (
-    <>
-      <ChannelSidebar community={community} activeChannelId={resolved.channel.id} />
+    <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-5 py-6 md:px-8 md:py-8">
       <ChatArea community={community} channel={resolved.channel} />
-      <MemberList />
-    </>
+    </div>
   );
 }

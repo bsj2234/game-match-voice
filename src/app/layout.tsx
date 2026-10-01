@@ -1,22 +1,23 @@
-import { Outfit, IBM_Plex_Sans } from "next/font/google";
+import { Syne, Figtree } from "next/font/google";
 import type { Metadata } from "next";
 import "./globals.css";
 
-const display = Outfit({
+const display = Syne({
   variable: "--font-display",
   subsets: ["latin"],
+  weight: ["600", "700", "800"],
 });
 
-const sans = IBM_Plex_Sans({
+const sans = Figtree({
   variable: "--font-body",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "GameMatch Voice",
+  title: "GameMatch — 취향 맞는 파티를 찾다",
   description:
-    "게임 취향이 맞는 사람들과 커뮤니티를 만들고, Discord처럼 음성으로 바로 플레이하세요.",
+    "게임 취향으로 매칭하고, 맞으면 바로 음성으로 붙는 파티 파인더.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -25,7 +26,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="ko"
       className={`${display.variable} ${sans.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sans">{children}</body>
+      <body className="flex min-h-full flex-col font-sans">{children}</body>
     </html>
   );
 }

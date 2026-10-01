@@ -1,4 +1,4 @@
-import { ServerRail } from "@/components/ServerRail";
+import { MatchNav } from "@/components/MatchNav";
 
 export default function AppShellLayout({
   children,
@@ -6,9 +6,9 @@ export default function AppShellLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-screen overflow-hidden bg-[var(--bg-deep)]">
-      <ServerRail />
-      {children}
+    <div className="flex min-h-screen flex-col bg-[var(--paper)]">
+      <MatchNav />
+      <div className="flex flex-1 flex-col">{children}</div>
     </div>
   );
 }

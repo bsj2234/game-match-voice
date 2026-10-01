@@ -1,29 +1,40 @@
 @import "tailwindcss";
 
 :root {
-  --bg-deep: #0e0f12;
-  --bg-app: #1a1d24;
-  --bg-panel: #22262f;
-  --bg-elevated: #2a303b;
-  --bg-hover: #323945;
-  --border: #343b48;
-  --text: #e8eaef;
-  --text-muted: #9aa3b5;
-  --text-dim: #6d7689;
-  --accent: #2dd4a8;
-  --accent-strong: #1fb890;
-  --accent-soft: rgba(45, 212, 168, 0.14);
-  --danger: #ed4245;
-  --warning: #faa81a;
-  --online: #3ba55d;
-  --idle: #faa81a;
-  --dnd: #ed4245;
-  --offline: #747f8d;
+  --ink: #0b1c2c;
+  --ink-soft: #1a3348;
+  --paper: #e9eef3;
+  --paper-2: #f7f9fb;
+  --surface: #ffffff;
+  --line: #c5d0db;
+  --muted: #5a6d7e;
+  --dim: #8091a1;
+  --signal: #ff4a1c;
+  --signal-deep: #e03a10;
+  --signal-soft: rgba(255, 74, 28, 0.12);
+  --ok: #0f9f6e;
+  --danger: #d92d20;
+  --bg-deep: var(--paper);
+  --bg-app: var(--paper-2);
+  --bg-panel: var(--surface);
+  --bg-elevated: var(--paper-2);
+  --bg-hover: #dfe7ef;
+  --border: var(--line);
+  --text: var(--ink);
+  --text-muted: var(--muted);
+  --text-dim: var(--dim);
+  --accent: var(--signal);
+  --accent-strong: var(--signal-deep);
+  --accent-soft: var(--signal-soft);
+  --online: var(--ok);
+  --idle: #c98500;
+  --dnd: var(--danger);
+  --offline: var(--dim);
 }
 
 @theme inline {
-  --color-background: var(--bg-deep);
-  --color-foreground: var(--text);
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
   --font-sans: var(--font-body), "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
   --font-display: var(--font-display), "Apple SD Gothic Neo", sans-serif;
 }
@@ -39,8 +50,8 @@ body {
 
 body {
   margin: 0;
-  background: var(--bg-deep);
-  color: var(--text);
+  background: var(--paper);
+  color: var(--ink);
   font-family: var(--font-body), "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
 }
 
@@ -64,10 +75,61 @@ a {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3a4150;
+  background: #b0becb;
   border-radius: 8px;
 }
 
 ::-webkit-scrollbar-track {
   background: transparent;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes sweep {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes pulse-slot {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.anim-rise {
+  animation: rise-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.anim-rise-delay {
+  animation: rise-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
+}
+
+.anim-rise-delay-2 {
+  animation: rise-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.24s both;
+}
+
+.anim-underline {
+  transform-origin: left;
+  animation: sweep 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+}
+
+.anim-slot {
+  animation: pulse-slot 2.4s ease-in-out infinite;
 }

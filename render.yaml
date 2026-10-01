@@ -1,0 +1,17 @@
+# https://render.com — New Web Service → this repo
+services:
+  - type: web
+    name: game-match-voice
+    runtime: docker
+    plan: free
+    healthCheckPath: /match
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Optional TURN (https://www.metered.ca/tools/openrelay/ 등에서 발급)
+      - key: NEXT_PUBLIC_TURN_URL
+        sync: false
+      - key: NEXT_PUBLIC_TURN_USERNAME
+        sync: false
+      - key: NEXT_PUBLIC_TURN_CREDENTIAL
+        sync: false
