@@ -7,6 +7,7 @@ export function MatchNav() {
   const pathname = usePathname();
   const onLobby = pathname.startsWith("/channels");
   const onMatch = pathname.startsWith("/match");
+  const onPrefs = pathname.startsWith("/preferences");
 
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--line)] bg-[var(--paper)]/90 backdrop-blur-md">
@@ -14,18 +15,13 @@ export function MatchNav() {
         <Link href="/" className="font-display text-lg font-extrabold tracking-tight">
           Melt<span className="text-[var(--signal)]">In</span>
         </Link>
-        <nav className="flex items-center gap-6 text-sm font-semibold">
-          <Link
-            href="/match"
-            className={`relative pb-1 transition ${
-              onMatch ? "text-[var(--ink)]" : "text-[var(--muted)] hover:text-[var(--ink)]"
-            }`}
-          >
+        <nav className="flex items-center gap-5 text-sm font-semibold sm:gap-6">
+          <NavLink href="/preferences" active={onPrefs}>
+            취향
+          </NavLink>
+          <NavLink href="/match" active={onMatch}>
             매칭
-            {onMatch && (
-              <span className="absolute inset-x-0 -bottom-0.5 h-0.5 bg-[var(--signal)]" />
-            )}
-          </Link>
+          </NavLink>
           <span
             className={`relative pb-1 ${
               onLobby ? "text-[var(--ink)]" : "text-[var(--dim)]"
@@ -39,5 +35,27 @@ export function MatchNav() {
         </nav>
       </div>
     </header>
+  );
+}
+
+function NavLink({
+  href,
+  active,
+  children,
+}: {
+  href: string;
+  active: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      className={`relative pb-1 transition ${
+        active ? "text-[var(--ink)]" : "text-[var(--muted)] hover:text-[var(--ink)]"
+      }`}
+    >
+      {children}
+      {active && <span className="absolute inset-x-0 -bottom-0.5 h-0.5 bg-[var(--signal)]" />}
+    </Link>
   );
 }

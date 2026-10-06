@@ -1,24 +1,36 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { usePreferences } from "@/hooks/usePreferences";
 import { gameTags, matchRooms } from "@/lib/mock-data";
+import { isPreferencesComplete } from "@/lib/preferences";
 
 export default function MatchPage() {
-  const [selected, setSelected] = useState<string[]>(["Valorant"]);
+  const { prefs, ready } = usePreferences();
+  const [selected, setSelected] = useState<string[]>([]);
   const [query, setQuery] = useState("");
+  const [hydratedFilter, setHydratedFilter] = useState(false);
+
+  useEffect(() => {
+    if (!ready || hydratedFilter) return;
+    setSelected(prefs?.games?.length ? prefs.games : []);
+    setHydratedFilter(true);
+  }, [ready, prefs, hydratedFilter]);
 
   const rooms = useMemo(() => {
     return matchRooms.filter((room) => {
       const gameOk =
         selected.length === 0 ||
         selected.some((g) => room.game === g || room.tags.includes(g));
+
       const q = query.trim().toLowerCase();
       const queryOk =
         !q ||
         room.title.toLowerCase().includes(q) ||
         room.game.toLowerCase().includes(q) ||
         room.tags.some((t) => t.toLowerCase().includes(q));
+
       return gameOk && queryOk;
     });
   }, [selected, query]);
@@ -29,24 +41,66 @@ export default function MatchPage() {
     );
   }
 
+  const complete = isPreferencesComplete(prefs);
+
   return (
     <div className="mx-auto w-full max-w-6xl flex-1 px-5 py-10 md:px-8">
-      <div className="mb-10 max-w-2xl">
-        <p className="font-display text-xs font-bold uppercase tracking-[0.22em] text-[var(--signal)]">
-          MeltIn
-        </p>
-        <h1 className="mt-2 font-display text-4xl font-extrabold tracking-tight md:text-5xl">
-          오늘 뭐 할래?
-        </h1>
-        <p className="mt-3 text-[var(--muted)]">
-          게임을 고르면 열린 파티가 보여요. 고르면 음성 로비로 바로 들어갑니다.
-        </p>
+      <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div className="max-w-2xl">
+          <p className="font-display text-xs font-bold uppercase tracking-[0.22em] text-[var(--signal)]">
+            MeltIn
+          </p>
+          <h1 className="mt-2 font-display text-4xl font-extrabold tracking-tight md:text-5xl">
+            {prefs?.displayName ? `${prefs.displayName}님, 오늘 뭐 할래?` : "오늘 뭐 할래?"}
+          </h1>
+          <p className="mt-3 text-[var(--muted)]">
+            취향에 맞는 열린 파티를 고르면 음성 로비로 들어갑니다.
+          </p>
+        </div>
+        <Link
+          href="/preferences"
+          className="shrink-0 border border-[var(--ink)] bg-[var(--ink)] px-5 py-2.5 text-center text-sm font-bold text-white transition hover:bg-[var(--ink-soft)]"
+        >
+          {complete ? "취향 수정" : "취향 입력하기"}
+        </Link>
       </div>
+
+      {!complete && ready && (
+        <div className="mb-8 border border-[var(--signal)] bg-[var(--signal-soft)] px-5 py-4">
+          <p className="font-display text-base font-bold">먼저 취향을 저장해 주세요</p>
+          <p className="mt-1 text-sm text-[var(--muted)]">
+            이름·게임·스타일을 입력하면 매칭이 더 잘 맞습니다.
+          </p>
+          <Link
+            href="/preferences"
+            className="mt-3 inline-block text-sm font-bold text-[var(--signal-deep)] underline-offset-2 hover:underline"
+          >
+            취향 입력하러 가기 →
+          </Link>
+        </div>
+      )}
+
+      {complete && prefs && (
+        <div className="mb-8 flex flex-wrap gap-2 text-sm">
+          <span className="border border-[var(--line)] bg-[var(--surface)] px-3 py-1.5 text-[var(--muted)]">
+            마이크 ·{" "}
+            {prefs.mic === "ok" ? "가능" : prefs.mic === "required" ? "필수" : "없음"}
+          </span>
+          {prefs.playstyles.map((s) => (
+            <span
+              key={s}
+              className="border border-[var(--line)] bg-[var(--surface)] px-3 py-1.5 text-[var(--ink-soft)]"
+            >
+              {s}
+            </span>
+          ))}
+        </div>
+      )}
 
       <section className="mb-10">
         <div className="mb-3 flex items-end justify-between gap-4">
           <h2 className="font-display text-sm font-bold uppercase tracking-[0.16em] text-[var(--ink-soft)]">
-            1. 취향 선택
+            게임 필터
           </h2>
           <button
             type="button"
@@ -81,10 +135,11 @@ export default function MatchPage() {
         <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h2 className="font-display text-sm font-bold uppercase tracking-[0.16em] text-[var(--ink-soft)]">
-              2. 열린 파티
+              열린 파티
             </h2>
             <p className="mt-1 text-sm text-[var(--muted)]">
               {rooms.length}개 방 · 클릭하면 음성 로비
+              <span className="text-[var(--dim)]"> (목록은 아직 예시 데이터)</span>
             </p>
           </div>
           <input
@@ -105,15 +160,14 @@ export default function MatchPage() {
 
           {rooms.length === 0 ? (
             <div className="px-5 py-16 text-center text-[var(--muted)]">
-              조건에 맞는 방이 없습니다. 취향을 바꿔보세요.
+              조건에 맞는 방이 없습니다. 필터를 바꿔보세요.
             </div>
           ) : (
-            rooms.map((room, i) => (
+            rooms.map((room) => (
               <Link
                 key={room.id}
                 href={`/channels/${room.communityId}/${room.channelId}`}
                 className="group grid grid-cols-1 gap-3 border-b border-[var(--line)] px-5 py-4 transition last:border-b-0 hover:bg-[var(--signal-soft)] md:grid-cols-[1.4fr_0.7fr_0.5fr_auto] md:items-center md:gap-4"
-                style={{ animationDelay: `${i * 40}ms` }}
               >
                 <div>
                   <div className="font-display text-lg font-bold tracking-tight group-hover:text-[var(--signal-deep)]">

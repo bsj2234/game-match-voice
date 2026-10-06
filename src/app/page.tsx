@@ -55,16 +55,16 @@ export default function HomePage() {
         </p>
         <div className="anim-rise-delay-2 mt-10 flex flex-wrap gap-3">
           <Link
-            href="/match"
+            href="/preferences"
             className="bg-[var(--signal)] px-8 py-3.5 text-sm font-bold text-white transition hover:bg-[var(--signal-deep)]"
           >
-            매칭 시작
+            취향 입력
           </Link>
           <Link
             href="/match"
             className="border border-white/25 bg-white/5 px-8 py-3.5 text-sm font-semibold text-white/90 backdrop-blur transition hover:border-white/50 hover:bg-white/10"
           >
-            열린 방 보기
+            매칭 보드
           </Link>
         </div>
 
