@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { usePreferences } from "@/hooks/usePreferences";
+import { useWebPush } from "@/hooks/useWebPush";
 import { gameTags, matchRooms } from "@/lib/mock-data";
 import { isPreferencesComplete } from "@/lib/preferences";
 
 export default function MatchPage() {
   const { prefs, ready } = usePreferences();
+  const push = useWebPush(prefs);
   const [selected, setSelected] = useState<string[]>([]);
   const [query, setQuery] = useState("");
   const [hydratedFilter, setHydratedFilter] = useState(false);
@@ -95,6 +97,41 @@ export default function MatchPage() {
             </span>
           ))}
         </div>
+      )}
+
+      {complete && push.supported && (
+        <section className="mb-10 border border-[var(--line)] bg-[var(--surface)] p-5">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="font-display text-base font-bold">매칭 대기 · 웹 푸시</h2>
+              <p className="mt-1 text-sm text-[var(--muted)]">
+                같은 게임을 고른 다른 사람이 대기를 켜면 알림이 갑니다. (서버가 깨어 있을 때)
+              </p>
+            </div>
+            <button
+              type="button"
+              disabled={push.busy}
+              onClick={() => void push.setMatchWaiting(!push.waiting)}
+              className={`px-5 py-2.5 text-sm font-bold transition disabled:opacity-40 ${
+                push.waiting
+                  ? "border border-[var(--signal)] bg-[var(--signal-soft)] text-[var(--signal-deep)]"
+                  : "bg-[var(--signal)] text-white hover:bg-[var(--signal-deep)]"
+              }`}
+            >
+              {push.busy
+                ? "처리 중…"
+                : push.waiting
+                  ? "대기 중 · 탭해서 끄기"
+                  : "이 취향으로 대기하기"}
+            </button>
+          </div>
+          {push.lastMatch && (
+            <p className="mt-3 text-sm font-semibold text-[var(--ok)]">{push.lastMatch}</p>
+          )}
+          {push.error && (
+            <p className="mt-2 text-xs text-[var(--danger)]">{push.error}</p>
+          )}
+        </section>
       )}
 
       <section className="mb-10">

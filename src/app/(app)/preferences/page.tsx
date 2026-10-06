@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { usePreferences } from "@/hooks/usePreferences";
+import { useWebPush } from "@/hooks/useWebPush";
 import { gameTags } from "@/lib/mock-data";
 import {
   MIC_OPTIONS,
@@ -17,6 +18,7 @@ export default function PreferencesPage() {
   const { ready, draftDefaults, save, prefs } = usePreferences();
   const [draft, setDraft] = useState<UserPreferences>(draftDefaults);
   const [savedFlash, setSavedFlash] = useState(false);
+  const push = useWebPush(prefs);
 
   useEffect(() => {
     if (ready) setDraft(draftDefaults);
@@ -168,6 +170,51 @@ export default function PreferencesPage() {
             );
           })}
         </div>
+      </section>
+
+      <section className="mb-10 border border-[var(--line)] bg-[var(--surface)] p-5">
+        <h2 className="font-display text-sm font-bold uppercase tracking-[0.14em] text-[var(--ink-soft)]">
+          5. 웹 푸시 알림
+        </h2>
+        <p className="mt-1 text-sm text-[var(--muted)]">
+          취향이 맞는 사람이 매칭 대기를 켜면 알림을 받습니다. 먼저 위 취향을 저장한 뒤 켜 주세요.
+        </p>
+        {!push.supported ? (
+          <p className="mt-4 text-sm text-[var(--danger)]">이 브라우저는 웹 푸시를 지원하지 않습니다.</p>
+        ) : (
+          <div className="mt-4 flex flex-wrap gap-2">
+            {!push.subscribed ? (
+              <button
+                type="button"
+                disabled={push.busy || !prefs}
+                onClick={() => void push.enablePush()}
+                className="bg-[var(--ink)] px-5 py-2.5 text-sm font-bold text-white disabled:opacity-40"
+              >
+                {push.busy ? "설정 중…" : "알림 켜기"}
+              </button>
+            ) : (
+              <button
+                type="button"
+                disabled={push.busy}
+                onClick={() => void push.disablePush()}
+                className="border border-[var(--line)] px-5 py-2.5 text-sm font-bold"
+              >
+                알림 끄기
+              </button>
+            )}
+            <span className="self-center text-xs text-[var(--dim)]">
+              상태 ·{" "}
+              {!prefs
+                ? "취향 저장 필요"
+                : push.subscribed
+                  ? "구독 중"
+                  : push.permission === "denied"
+                    ? "권한 거부됨"
+                    : "꺼짐"}
+            </span>
+          </div>
+        )}
+        {push.error && <p className="mt-2 text-xs text-[var(--danger)]">{push.error}</p>}
       </section>
 
       <div className="flex flex-wrap items-center gap-3">

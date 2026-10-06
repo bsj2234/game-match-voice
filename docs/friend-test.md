@@ -54,6 +54,25 @@ NEXT_PUBLIC_TURN_CREDENTIAL=...
 4. 안 들리면 TURN env 넣고 재배포
 5. Render면 “잠든 서버”면 한 명이 먼저 깨운 뒤 30초 후 재시도
 
+## 웹 푸시 (매칭 알림)
+
+Render → **Environment**에 VAPID 키 추가 (로컬 `.env.local`과 동일 값):
+
+```
+VAPID_PRIVATE_KEY=...
+NEXT_PUBLIC_VAPID_PUBLIC_KEY=...
+VAPID_SUBJECT=mailto:meltin@localhost
+```
+
+키 생성: `npx web-push generate-vapid-keys`
+
+사용 방법:
+1. `/preferences`에서 취향 저장 → **알림 켜기**
+2. `/match`에서 **이 취향으로 대기하기**
+3. 친구도 같은 게임으로 대기하면 서로 푸시
+
+> 서버가 잠들면 대기 목록이 초기화될 수 있어요. 테스트 전에 한 번 접속해 깨워 주세요.
+
 ## 다음 (진짜 서비스)
 
 `docs/aws-mvp-spec.md` — DynamoDB + WebSocket + coturn
