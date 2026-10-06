@@ -17,12 +17,16 @@ export default function PreferencesPage() {
   const router = useRouter();
   const { ready, draftDefaults, save, prefs } = usePreferences();
   const [draft, setDraft] = useState<UserPreferences>(draftDefaults);
+  const [hydrated, setHydrated] = useState(false);
   const [savedFlash, setSavedFlash] = useState(false);
   const push = useWebPush(prefs);
 
+  // Hydrate once after localStorage load — do not reset on every render.
   useEffect(() => {
-    if (ready) setDraft(draftDefaults);
-  }, [ready, draftDefaults]);
+    if (!ready || hydrated) return;
+    setDraft(draftDefaults);
+    setHydrated(true);
+  }, [ready, hydrated, draftDefaults]);
 
   function toggleGame(game: string) {
     setDraft((prev) => ({

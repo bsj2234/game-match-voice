@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   PREFERENCES_STORAGE_KEY,
   createEmptyPreferences,
@@ -47,11 +47,16 @@ export function usePreferences() {
     setPrefs(null);
   }, []);
 
+  const draftDefaults = useMemo(
+    () => prefs ?? createEmptyPreferences(),
+    [prefs],
+  );
+
   return {
     prefs,
     ready,
     save,
     clear,
-    draftDefaults: prefs ?? createEmptyPreferences(),
+    draftDefaults,
   };
 }
