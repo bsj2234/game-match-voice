@@ -1,18 +1,5 @@
-import { Syne, Figtree } from "next/font/google";
 import type { Metadata } from "next";
 import "./globals.css";
-
-const display = Syne({
-  variable: "--font-display",
-  subsets: ["latin"],
-  weight: ["600", "700", "800"],
-});
-
-const sans = Figtree({
-  variable: "--font-body",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
 
 export const metadata: Metadata = {
   title: "MeltIn — 맞는 로비에 녹아든다",
@@ -22,10 +9,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="ko"
-      className={`${display.variable} ${sans.variable} h-full antialiased`}
-    >
+    <html lang="ko" className="h-full antialiased">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body className="flex min-h-full flex-col font-sans">{children}</body>
     </html>
   );

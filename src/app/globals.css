@@ -35,8 +35,8 @@
 @theme inline {
   --color-background: var(--paper);
   --color-foreground: var(--ink);
-  --font-sans: var(--font-body), "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
-  --font-display: var(--font-display), "Apple SD Gothic Neo", sans-serif;
+  --font-sans: "Figtree", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  --font-display: "Syne", "Apple SD Gothic Neo", sans-serif;
 }
 
 * {
@@ -52,11 +52,11 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: var(--font-body), "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  font-family: "Figtree", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
 }
 
 .font-display {
-  font-family: var(--font-display), "Apple SD Gothic Neo", sans-serif;
+  font-family: "Syne", "Apple SD Gothic Neo", sans-serif;
 }
 
 button,
