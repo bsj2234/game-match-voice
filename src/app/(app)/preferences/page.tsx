@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { TagPicker } from "@/components/TagPicker";
 import { usePreferences } from "@/hooks/usePreferences";
 import { useWebPush } from "@/hooks/useWebPush";
 import { gameTags } from "@/lib/mock-data";
@@ -27,24 +28,6 @@ export default function PreferencesPage() {
     setDraft(draftDefaults);
     setHydrated(true);
   }, [ready, hydrated, draftDefaults]);
-
-  function toggleGame(game: string) {
-    setDraft((prev) => ({
-      ...prev,
-      games: prev.games.includes(game)
-        ? prev.games.filter((g) => g !== game)
-        : [...prev.games, game],
-    }));
-  }
-
-  function togglePlaystyle(style: string) {
-    setDraft((prev) => ({
-      ...prev,
-      playstyles: prev.playstyles.includes(style)
-        ? prev.playstyles.filter((s) => s !== style)
-        : [...prev.playstyles, style],
-    }));
-  }
 
   function handleSave() {
     if (draft.games.length === 0) return;
@@ -102,25 +85,17 @@ export default function PreferencesPage() {
         <h2 className="font-display text-sm font-bold uppercase tracking-[0.14em] text-[var(--ink-soft)]">
           2. 하는 게임
         </h2>
-        <p className="mt-1 text-sm text-[var(--muted)]">하나 이상 골라 주세요</p>
-        <div className="mt-4 flex flex-wrap gap-2">
-          {gameTags.map((game) => {
-            const active = draft.games.includes(game);
-            return (
-              <button
-                key={game}
-                type="button"
-                onClick={() => toggleGame(game)}
-                className={`border px-4 py-2 text-sm font-semibold transition ${
-                  active
-                    ? "border-[var(--signal)] bg-[var(--signal)] text-white"
-                    : "border-[var(--line)] bg-[var(--paper-2)] text-[var(--ink-soft)] hover:border-[var(--ink)]"
-                }`}
-              >
-                {game}
-              </button>
-            );
-          })}
+        <p className="mt-1 text-sm text-[var(--muted)]">
+          검색하거나 직접 입력 · Enter / 추가로 등록 · 여러 개 가능
+        </p>
+        <div className="mt-4">
+          <TagPicker
+            values={draft.games}
+            suggestions={gameTags}
+            onChange={(games) => setDraft((p) => ({ ...p, games }))}
+            placeholder="예: Valorant, 로스트아크…"
+            accent="signal"
+          />
         </div>
       </section>
 
@@ -128,25 +103,17 @@ export default function PreferencesPage() {
         <h2 className="font-display text-sm font-bold uppercase tracking-[0.14em] text-[var(--ink-soft)]">
           3. 플레이 스타일
         </h2>
-        <p className="mt-1 text-sm text-[var(--muted)]">선택 · 여러 개 가능</p>
-        <div className="mt-4 flex flex-wrap gap-2">
-          {PLAYSTYLE_OPTIONS.map((style) => {
-            const active = draft.playstyles.includes(style);
-            return (
-              <button
-                key={style}
-                type="button"
-                onClick={() => togglePlaystyle(style)}
-                className={`border px-4 py-2 text-sm font-semibold transition ${
-                  active
-                    ? "border-[var(--ink)] bg-[var(--ink)] text-white"
-                    : "border-[var(--line)] bg-[var(--paper-2)] text-[var(--ink-soft)] hover:border-[var(--ink)]"
-                }`}
-              >
-                {style}
-              </button>
-            );
-          })}
+        <p className="mt-1 text-sm text-[var(--muted)]">
+          검색하거나 직접 입력 · 여러 개 가능
+        </p>
+        <div className="mt-4">
+          <TagPicker
+            values={draft.playstyles}
+            suggestions={PLAYSTYLE_OPTIONS}
+            onChange={(playstyles) => setDraft((p) => ({ ...p, playstyles }))}
+            placeholder="예: 랭크, 듀오, 초보 환영…"
+            accent="ink"
+          />
         </div>
       </section>
 

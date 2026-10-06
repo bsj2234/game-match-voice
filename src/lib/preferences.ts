@@ -19,6 +19,12 @@ export const PLAYSTYLE_OPTIONS = [
   "힐링",
   "협동",
   "스크림",
+  "초보 환영",
+  "티칭",
+  "조용히",
+  "수다",
+  "밤샘",
+  "한판만",
 ] as const;
 
 export const MIC_OPTIONS: { value: MicPreference; label: string; hint: string }[] = [

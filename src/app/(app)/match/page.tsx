@@ -20,6 +20,17 @@ export default function MatchPage() {
     setHydratedFilter(true);
   }, [ready, prefs, hydratedFilter]);
 
+  const filterGames = useMemo(() => {
+    const merged = [...(prefs?.games ?? []), ...gameTags];
+    return [...new Set(merged)];
+  }, [prefs?.games]);
+
+  const visibleGames = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return filterGames;
+    return filterGames.filter((g) => g.toLowerCase().includes(q));
+  }, [filterGames, query]);
+
   const rooms = useMemo(() => {
     return matchRooms.filter((room) => {
       const gameOk =
@@ -147,44 +158,46 @@ export default function MatchPage() {
             전체 보기
           </button>
         </div>
+        <input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="게임 · 제목 · 태그 검색"
+          className="mb-3 w-full border border-[var(--line)] bg-[var(--surface)] px-4 py-2.5 text-sm outline-none transition focus:border-[var(--ink)] sm:max-w-xs"
+        />
         <div className="flex flex-wrap gap-2">
-          {gameTags.map((tag) => {
-            const active = selected.includes(tag);
-            return (
-              <button
-                key={tag}
-                type="button"
-                onClick={() => toggle(tag)}
-                className={`border px-4 py-2 text-sm font-semibold transition ${
-                  active
-                    ? "border-[var(--signal)] bg-[var(--signal)] text-white"
-                    : "border-[var(--line)] bg-[var(--surface)] text-[var(--ink-soft)] hover:border-[var(--ink)]"
-                }`}
-              >
-                {tag}
-              </button>
-            );
-          })}
+          {visibleGames.length === 0 ? (
+            <p className="text-sm text-[var(--muted)]">검색 결과가 없습니다.</p>
+          ) : (
+            visibleGames.map((tag) => {
+              const active = selected.includes(tag);
+              return (
+                <button
+                  key={tag}
+                  type="button"
+                  onClick={() => toggle(tag)}
+                  className={`border px-4 py-2 text-sm font-semibold transition ${
+                    active
+                      ? "border-[var(--signal)] bg-[var(--signal)] text-white"
+                      : "border-[var(--line)] bg-[var(--surface)] text-[var(--ink-soft)] hover:border-[var(--ink)]"
+                  }`}
+                >
+                  {tag}
+                </button>
+              );
+            })
+          )}
         </div>
       </section>
 
       <section>
-        <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <h2 className="font-display text-sm font-bold uppercase tracking-[0.16em] text-[var(--ink-soft)]">
-              열린 파티
-            </h2>
-            <p className="mt-1 text-sm text-[var(--muted)]">
-              {rooms.length}개 방 · 클릭하면 음성 로비
-              <span className="text-[var(--dim)]"> (목록은 아직 예시 데이터)</span>
-            </p>
-          </div>
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="제목 · 태그 검색"
-            className="w-full border border-[var(--line)] bg-[var(--surface)] px-4 py-2.5 text-sm outline-none transition focus:border-[var(--ink)] sm:max-w-xs"
-          />
+        <div className="mb-4">
+          <h2 className="font-display text-sm font-bold uppercase tracking-[0.16em] text-[var(--ink-soft)]">
+            열린 파티
+          </h2>
+          <p className="mt-1 text-sm text-[var(--muted)]">
+            {rooms.length}개 방 · 클릭하면 음성 로비
+            <span className="text-[var(--dim)]"> (목록은 아직 예시 데이터)</span>
+          </p>
         </div>
 
         <div className="overflow-hidden border border-[var(--line)] bg-[var(--surface)]">

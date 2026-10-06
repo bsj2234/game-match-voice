@@ -286,6 +286,19 @@ export const gameTags = [
   "Minecraft",
   "TFT",
   "Stardew Valley",
+  "It Takes Two",
+  "Lost Ark",
+  "MapleStory",
+  "PUBG",
+  "Fortnite",
+  "Genshin Impact",
+  "Destiny 2",
+  "CS2",
+  "Dota 2",
+  "Roblox",
+  "Among Us",
+  "Dead by Daylight",
+  "Baldur's Gate 3",
 ];
 
 export function getCommunity(id: string) {
